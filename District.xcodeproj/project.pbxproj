@@ -7,24 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05AA7798600076538788A31E /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBCD6DD2A38F040EB06F54 /* HomeScreen.swift */; };
+		05DF5E16F2A79491B02FB33C /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25AAA022ACD92DD56AD49F2 /* CartManager.swift */; };
 		1C8AEB179CB61703D7D05DA5 /* ItineraryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB569A5DF47389B180DD45B /* ItineraryModels.swift */; };
+		2A1E18EAD331FEB47EC145BD /* ItineraryHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530723569478FBF7198B634B /* ItineraryHistoryScreen.swift */; };
 		3E192D36DE33A7449561A5CF /* UploadFlowScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5CAB20121F1044A2BA31D1 /* UploadFlowScreen.swift */; };
+		60584899C76FA8A00E259F44 /* FoodHomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CD830ECC78979127B2516C /* FoodHomeScreen.swift */; };
 		645D54435A106434E222F533 /* ItineraryTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC696328F959E184EAF001 /* ItineraryTypeScreen.swift */; };
+		6C0E17439243A842A2F7078B /* CartScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE127BE8270D8484018203 /* CartScreen.swift */; };
+		6F687A2946D4265C3F836921 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051F234CAE022E1BEFCACA26 /* MainTabView.swift */; };
 		70A31D171A8F0FC197039125 /* ChatFlowScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FE060F7C9CE1BD95CF456E /* ChatFlowScreen.swift */; };
 		8048841506072F98E568FAC6 /* DistrictApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B6353EF928686E47B84DCD /* DistrictApp.swift */; };
+		8DE36FF5CAECAB2D4FA42350 /* RestaurantDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517BE874E501AEB48881B8C7 /* RestaurantDetailScreen.swift */; };
 		A367FA004015D504789449DE /* ItineraryResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF3EE98592638D27438F6F6 /* ItineraryResultScreen.swift */; };
+		BC4E8A8C6738CFB0907BBF55 /* ItineraryMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649867AA9B371F9DFEBFA1D6 /* ItineraryMapView.swift */; };
+		BD2C0525F53825FB128F446D /* PlannerTabScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC97E5C27FF6663E36FA0B43 /* PlannerTabScreen.swift */; };
+		D08704A274B9D67AE537F9B8 /* ItineraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EBB4A80E9C9685323F3D7D /* ItineraryStore.swift */; };
+		DD640419286388DEE789DCAA /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698D9C3683FB272D2C39827 /* Theme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		051F234CAE022E1BEFCACA26 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		10B6353EF928686E47B84DCD /* DistrictApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistrictApp.swift; sourceTree = "<group>"; };
+		1698D9C3683FB272D2C39827 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		32CD830ECC78979127B2516C /* FoodHomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodHomeScreen.swift; sourceTree = "<group>"; };
+		32EBB4A80E9C9685323F3D7D /* ItineraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryStore.swift; sourceTree = "<group>"; };
+		43BE127BE8270D8484018203 /* CartScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartScreen.swift; sourceTree = "<group>"; };
+		517BE874E501AEB48881B8C7 /* RestaurantDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailScreen.swift; sourceTree = "<group>"; };
+		530723569478FBF7198B634B /* ItineraryHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryHistoryScreen.swift; sourceTree = "<group>"; };
 		5E5CAB20121F1044A2BA31D1 /* UploadFlowScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFlowScreen.swift; sourceTree = "<group>"; };
 		5EB569A5DF47389B180DD45B /* ItineraryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryModels.swift; sourceTree = "<group>"; };
+		649867AA9B371F9DFEBFA1D6 /* ItineraryMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryMapView.swift; sourceTree = "<group>"; };
 		65326399E62444EB00FAEBB9 /* District.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = District.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91FC696328F959E184EAF001 /* ItineraryTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryTypeScreen.swift; sourceTree = "<group>"; };
 		CDF3EE98592638D27438F6F6 /* ItineraryResultScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryResultScreen.swift; sourceTree = "<group>"; };
 		D8FE060F7C9CE1BD95CF456E /* ChatFlowScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowScreen.swift; sourceTree = "<group>"; };
-		FFEBCD6DD2A38F040EB06F54 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		DC97E5C27FF6663E36FA0B43 /* PlannerTabScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTabScreen.swift; sourceTree = "<group>"; };
+		F25AAA022ACD92DD56AD49F2 /* CartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -47,7 +65,9 @@
 		8602F1390BF346C7CD1E1ADE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F25AAA022ACD92DD56AD49F2 /* CartManager.swift */,
 				5EB569A5DF47389B180DD45B /* ItineraryModels.swift */,
+				32EBB4A80E9C9685323F3D7D /* ItineraryStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -56,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				10B6353EF928686E47B84DCD /* DistrictApp.swift */,
+				1698D9C3683FB272D2C39827 /* Theme.swift */,
 				8602F1390BF346C7CD1E1ADE /* Models */,
 				A4BB2F029C06EF574CB1D5CC /* Views */,
 			);
@@ -65,10 +86,16 @@
 		A4BB2F029C06EF574CB1D5CC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				43BE127BE8270D8484018203 /* CartScreen.swift */,
 				D8FE060F7C9CE1BD95CF456E /* ChatFlowScreen.swift */,
-				FFEBCD6DD2A38F040EB06F54 /* HomeScreen.swift */,
+				32CD830ECC78979127B2516C /* FoodHomeScreen.swift */,
+				530723569478FBF7198B634B /* ItineraryHistoryScreen.swift */,
+				649867AA9B371F9DFEBFA1D6 /* ItineraryMapView.swift */,
 				CDF3EE98592638D27438F6F6 /* ItineraryResultScreen.swift */,
 				91FC696328F959E184EAF001 /* ItineraryTypeScreen.swift */,
+				051F234CAE022E1BEFCACA26 /* MainTabView.swift */,
+				DC97E5C27FF6663E36FA0B43 /* PlannerTabScreen.swift */,
+				517BE874E501AEB48881B8C7 /* RestaurantDetailScreen.swift */,
 				5E5CAB20121F1044A2BA31D1 /* UploadFlowScreen.swift */,
 			);
 			path = Views;
@@ -129,12 +156,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05DF5E16F2A79491B02FB33C /* CartManager.swift in Sources */,
+				6C0E17439243A842A2F7078B /* CartScreen.swift in Sources */,
 				70A31D171A8F0FC197039125 /* ChatFlowScreen.swift in Sources */,
 				8048841506072F98E568FAC6 /* DistrictApp.swift in Sources */,
-				05AA7798600076538788A31E /* HomeScreen.swift in Sources */,
+				60584899C76FA8A00E259F44 /* FoodHomeScreen.swift in Sources */,
+				2A1E18EAD331FEB47EC145BD /* ItineraryHistoryScreen.swift in Sources */,
+				BC4E8A8C6738CFB0907BBF55 /* ItineraryMapView.swift in Sources */,
 				1C8AEB179CB61703D7D05DA5 /* ItineraryModels.swift in Sources */,
 				A367FA004015D504789449DE /* ItineraryResultScreen.swift in Sources */,
+				D08704A274B9D67AE537F9B8 /* ItineraryStore.swift in Sources */,
 				645D54435A106434E222F533 /* ItineraryTypeScreen.swift in Sources */,
+				6F687A2946D4265C3F836921 /* MainTabView.swift in Sources */,
+				BD2C0525F53825FB128F446D /* PlannerTabScreen.swift in Sources */,
+				8DE36FF5CAECAB2D4FA42350 /* RestaurantDetailScreen.swift in Sources */,
+				DD640419286388DEE789DCAA /* Theme.swift in Sources */,
 				3E192D36DE33A7449561A5CF /* UploadFlowScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
