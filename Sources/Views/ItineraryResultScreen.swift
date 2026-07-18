@@ -2,138 +2,158 @@ import SwiftUI
 import MapKit
 
 struct ItineraryResultScreen: View {
+
     let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
     var timeline: [TimelineBlock] = MockData.timeline
+
+    @EnvironmentObject var itineraryStore: ItineraryStore
+    @Environment(\.dismiss) var dismiss
+    let timeline = MockData.timeline
+    @State private var isFinalized = false
+
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                
-                // Search & Filters
-                VStack(spacing: 16) {
-                    HStack {
-                        Image(systemName: "magnifyingglass").foregroundColor(.secondary)
-                        Text("Search activities, restaurants...").foregroundColor(.secondary)
-                        Spacer()
-                        Image(systemName: "line.3.horizontal.decrease.circle").foregroundColor(primaryColor)
+        ZStack(alignment: .bottom) {
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 0) {
+                    
+                    // Search & Filters
+                    VStack(spacing: 16) {
+                        HStack {
+                            Image(systemName: "magnifyingglass").foregroundColor(Theme.textMuted)
+                            Text("Search activities, restaurants...").foregroundColor(Theme.textMuted)
+                            Spacer()
+                            Image(systemName: "line.3.horizontal.decrease.circle").foregroundColor(Theme.primary)
+                        }
+                        .padding()
+                        .background(Theme.cardBackground)
+                        .cornerRadius(Theme.cornerM)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(["Open Now", "Distance", "Rating 4.5+", "Budget", "Trending"], id: \.self) { filter in
+                                    Text(filter)
+                                        .font(.system(size: 14, weight: .medium))
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 8)
+                                        .background(Theme.cardBackground)
+                                        .foregroundColor(Theme.textSecondary)
+                                        .cornerRadius(20)
+                                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white.opacity(0.08), lineWidth: 1))
+                                }
+                            }
+                        }
                     }
                     .padding()
-                    .background(Color.white)
-                    .cornerRadius(16)
-                    .shadow(color: Color.black.opacity(0.05), radius: 5)
+                    .background(Theme.surfaceBackground)
                     
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(["Open Now", "Distance", "Rating 4.5+", "Budget", "Trending"], id: \.self) { filter in
-                                Text(filter)
-                                    .font(.system(size: 14, weight: .medium))
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
-                                    .background(Color.white)
-                                    .cornerRadius(20)
-                                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.2), lineWidth: 1))
+                    // Smart Features Banner
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Total Time").font(.system(size: 12)).opacity(0.8)
+                            HStack(spacing: 4) {
+                                Image(systemName: "clock")
+                                Text("10 Hours").bold()
                             }
                         }
-                    }
-                }
-                .padding()
-                .background(Color(UIColor.secondarySystemGroupedBackground))
-                
-                // Smart Features Banner
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Total Time").font(.system(size: 12)).opacity(0.8)
-                        HStack(spacing: 4) {
-                            Image(systemName: "clock")
-                            Text("10 Hours").bold()
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Est. Travel").font(.system(size: 12)).opacity(0.8)
+                            HStack(spacing: 4) {
+                                Image(systemName: "location.fill")
+                                Text("14 km").bold()
+                            }
+                        }
+                        Spacer()
+                        Button(action: {}) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "map.fill")
+                                Text("Map View")
+                            }
+                            .font(.system(size: 14, weight: .bold))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.white.opacity(0.2))
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
                         }
                     }
-                    Spacer()
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Est. Travel").font(.system(size: 12)).opacity(0.8)
-                        HStack(spacing: 4) {
-                            Image(systemName: "location.fill")
-                            Text("14 km").bold()
-                        }
-                    }
-                    Spacer()
-                    Button(action: {}) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "map.fill")
-                            Text("Map View")
-                        }
-                        .font(.system(size: 14, weight: .bold))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(Color.white)
-                        .foregroundColor(primaryColor)
-                        .cornerRadius(12)
-                    }
-                }
-                .padding()
-                .background(LinearGradient(colors: [primaryColor, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .foregroundColor(.white)
-                .cornerRadius(20)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-                
-                // Timeline
-                VStack(spacing: 32) {
-                    ForEach(Array(timeline.enumerated()), id: \.offset) { index, block in
-                        HStack(alignment: .top, spacing: 16) {
-                            
-                            // Timeline dot & line
-                            VStack(spacing: 0) {
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 32, height: 32)
-                                    .overlay(
-                                        Circle().stroke(primaryColor, lineWidth: 2)
-                                    )
-                                    .overlay(Text(block.icon))
+                    .padding()
+                    .background(Theme.primaryGradient)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    
+                    // Timeline
+                    VStack(spacing: 32) {
+                        ForEach(Array(timeline.enumerated()), id: \.offset) { index, block in
+                            HStack(alignment: .top, spacing: 16) {
                                 
-                                if index != timeline.count - 1 {
-                                    Rectangle()
-                                        .fill(primaryColor.opacity(0.3))
-                                        .frame(width: 2)
-                                        .padding(.top, 4)
-                                }
-                            }
-                            
-                            VStack(alignment: .leading, spacing: 16) {
-                                HStack(alignment: .bottom) {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(block.time)
-                                            .font(.system(size: 14, weight: .bold))
-                                            .foregroundColor(primaryColor)
-                                        Text(block.title)
-                                            .font(.system(size: 22, weight: .bold))
+                                // Timeline dot & line
+                                VStack(spacing: 0) {
+                                    Circle()
+                                        .fill(Theme.cardBackground)
+                                        .frame(width: 32, height: 32)
+                                        .overlay(
+                                            Circle().stroke(Theme.primary, lineWidth: 2)
+                                        )
+                                        .overlay(Text(block.icon))
+                                    
+                                    if index != timeline.count - 1 {
+                                        Rectangle()
+                                            .fill(Theme.primary.opacity(0.3))
+                                            .frame(width: 2)
+                                            .padding(.top, 4)
                                     }
-                                    Spacer()
-                                    Button("View All >") { }
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.secondary)
                                 }
                                 
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 16) {
-                                        ForEach(block.items) { item in
-                                            VenueCard(item: item)
+                                VStack(alignment: .leading, spacing: 16) {
+                                    HStack(alignment: .bottom) {
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(block.time)
+                                                .font(.system(size: 14, weight: .bold))
+                                                .foregroundColor(Theme.primary)
+                                            Text(block.title)
+                                                .font(.system(size: 22, weight: .bold))
+                                                .foregroundColor(Theme.textPrimary)
                                         }
+                                        Spacer()
+                                        Button("View All >") { }
+                                            .font(.system(size: 14))
+                                            .foregroundColor(Theme.textSecondary)
                                     }
-                                    .padding(.bottom, 16) // For shadow
+                                    
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack(spacing: 16) {
+                                            ForEach(block.items) { item in
+                                                VenueCard(item: item)
+                                            }
+                                        }
+                                        .padding(.bottom, 16)
+                                    }
                                 }
                             }
                         }
                     }
+                    .padding()
+                    .padding(.bottom, 100)
                 }
-                .padding()
+            }
+            .background(Theme.background.edgesIgnoringSafeArea(.all))
+            
+            // Finalize Button
+            if !isFinalized {
+                finalizeButton
             }
         }
-        .background(Color(UIColor.secondarySystemGroupedBackground).edgesIgnoringSafeArea(.all))
         .navigationTitle("Your Itinerary")
         .navigationBarTitleDisplayMode(.inline)
+
         .navigationBarBackButtonHidden(true)
+
+        .toolbarColorScheme(.dark, for: .navigationBar)
+
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
@@ -146,11 +166,48 @@ struct ItineraryResultScreen: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack(spacing: 16) {
-                    Image(systemName: "square.and.arrow.up").foregroundColor(primaryColor)
-                    Image(systemName: "heart").foregroundColor(primaryColor)
+                    Image(systemName: "square.and.arrow.up").foregroundColor(Theme.primary)
+                    Image(systemName: "heart").foregroundColor(Theme.primary)
                 }
             }
         }
+    }
+    
+    // MARK: - Finalize Button
+    
+    private var finalizeButton: some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                isFinalized = true
+                itineraryStore.finalize(timeline: timeline, title: "Today's Plan")
+            }
+            // Navigate back after short delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                dismiss()
+            }
+        }) {
+            HStack(spacing: 10) {
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.system(size: 18))
+                Text("Finalize Itinerary")
+                    .font(.system(size: 17, weight: .bold))
+            }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(Theme.primaryGradient)
+            .cornerRadius(Theme.cornerM)
+            .shadow(color: Theme.primary.opacity(0.4), radius: 12, y: 5)
+        }
+        .padding(.horizontal, Theme.paddingM)
+        .padding(.bottom, 12)
+        .background(
+            LinearGradient(
+                colors: [Theme.background.opacity(0), Theme.background],
+                startPoint: .top,
+                endPoint: .center
+            )
+        )
     }
 }
 
@@ -186,25 +243,28 @@ struct NavigationUtil {
 
 struct VenueCard: View {
     let item: Activity
-    let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Image area (Mocked with gray for now since we don't have assets)
+            // Image area
             ZStack(alignment: .topTrailing) {
                 Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+                    .fill(Theme.elevatedSurface)
                     .frame(height: 140)
                     .overlay(
                         Image(systemName: "photo")
                             .font(.system(size: 40))
-                            .foregroundColor(.gray.opacity(0.5))
+                            .foregroundColor(Theme.textMuted.opacity(0.3))
                     )
                 
                 Circle()
-                    .fill(Color.white.opacity(0.9))
+                    .fill(Theme.cardBackground.opacity(0.9))
                     .frame(width: 32, height: 32)
-                    .overlay(Image(systemName: "heart").font(.system(size: 14)))
+                    .overlay(
+                        Image(systemName: "heart")
+                            .font(.system(size: 14))
+                            .foregroundColor(Theme.textSecondary)
+                    )
                     .padding(12)
             }
             
@@ -212,11 +272,14 @@ struct VenueCard: View {
                 HStack(alignment: .top) {
                     Text(item.name)
                         .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(Theme.textPrimary)
                         .lineLimit(1)
                     Spacer()
                     HStack(spacing: 2) {
                         Image(systemName: "star.fill").foregroundColor(.yellow).font(.system(size: 12))
-                        Text(item.rating).font(.system(size: 14, weight: .bold))
+                        Text(item.rating)
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(Theme.textPrimary)
                     }
                 }
                 
@@ -228,7 +291,7 @@ struct VenueCard: View {
                     }
                 }
                 .font(.system(size: 13))
-                .foregroundColor(.secondary)
+                .foregroundColor(Theme.textSecondary)
                 
                 HStack {
                     ForEach(item.tags, id: \.self) { tag in
@@ -236,8 +299,8 @@ struct VenueCard: View {
                             .font(.system(size: 11))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(Color(UIColor.tertiarySystemGroupedBackground))
-                            .foregroundColor(.secondary)
+                            .background(Theme.elevatedSurface)
+                            .foregroundColor(Theme.textSecondary)
                             .cornerRadius(8)
                     }
                 }
@@ -248,7 +311,7 @@ struct VenueCard: View {
                         .font(.system(size: 15, weight: .bold))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(primaryColor)
+                        .background(Theme.primary)
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
@@ -257,8 +320,8 @@ struct VenueCard: View {
             .padding(16)
         }
         .frame(width: 260)
-        .background(Color.white)
+        .background(Theme.cardBackground)
         .cornerRadius(20)
-        .shadow(color: Color.black.opacity(0.08), radius: 10, y: 5)
+        .shadow(color: Color.black.opacity(0.2), radius: 10, y: 5)
     }
 }

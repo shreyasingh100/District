@@ -4,7 +4,8 @@ import SwiftUI
 struct DistrictApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
+            MainTabView()
+                .preferredColorScheme(.dark)
         }
     }
 }
