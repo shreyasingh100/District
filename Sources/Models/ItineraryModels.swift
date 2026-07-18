@@ -9,7 +9,7 @@ struct Activity: Identifiable, Hashable {
     let price: String?
     let image: String
     let tags: [String]
-    let coordinate: CLLocationCoordinate2D
+    var coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 28.5, longitude: 77.1)
     
     // Hashable conformance for CLLocationCoordinate2D
     func hash(into hasher: inout Hasher) {
@@ -29,8 +29,8 @@ struct TimelineBlock: Identifiable, Hashable {
     let items: [Activity]
 }
 
-
 // MARK: - Default Timeline (shown when no specific input)
+
 struct Itinerary: Identifiable, Hashable {
     let id = UUID()
     let title: String

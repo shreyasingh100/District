@@ -2,15 +2,11 @@ import SwiftUI
 import MapKit
 
 struct ItineraryResultScreen: View {
-
-    let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
-    var timeline: [TimelineBlock] = MockData.timeline
-
     @EnvironmentObject var itineraryStore: ItineraryStore
     @Environment(\.dismiss) var dismiss
-    let timeline = MockData.timeline
+    let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
+    var timeline: [TimelineBlock] = MockData.timeline
     @State private var isFinalized = false
-
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -149,11 +145,8 @@ struct ItineraryResultScreen: View {
         }
         .navigationTitle("Your Itinerary")
         .navigationBarTitleDisplayMode(.inline)
-
         .navigationBarBackButtonHidden(true)
-
         .toolbarColorScheme(.dark, for: .navigationBar)
-
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {

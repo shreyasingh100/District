@@ -52,33 +52,6 @@ struct PlannerTabScreen: View {
     private var plannerHomeView: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: Theme.paddingL) {
-                // Hero illustration area
-                VStack(spacing: 16) {
-                    ZStack {
-                        Circle()
-                            .fill(Theme.primary.opacity(0.08))
-                            .frame(width: 140, height: 140)
-                        
-                        Circle()
-                            .fill(Theme.primary.opacity(0.12))
-                            .frame(width: 100, height: 100)
-                        
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 44))
-                            .foregroundStyle(Theme.primaryGradient)
-                    }
-                    .padding(.top, 20)
-                    
-                    Text("Let AI craft your\nperfect day")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(Theme.textPrimary)
-                        .multilineTextAlignment(.center)
-                    
-                    Text("Choose how you'd like to get started")
-                        .font(.system(size: 15))
-                        .foregroundColor(Theme.textSecondary)
-                }
-                .padding(.bottom, 8)
                 
                 // Option 1: I Have an Idea
                 NavigationLink(destination: UploadFlowScreen()) {
