@@ -15,14 +15,14 @@ struct FoodHomeScreen: View {
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
+                ZStack(alignment: .top) {
+                    Theme.heroGradient
+                        .frame(height: 280)
+                        .ignoresSafeArea()
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 0) {
                         // Hero gradient background
-                        ZStack(alignment: .top) {
-                            Theme.heroGradient
-                                .frame(height: 280)
-                                .ignoresSafeArea()
+                        
                             
                             VStack(spacing: Theme.paddingM) {
                                 // Location header
@@ -65,9 +65,9 @@ struct FoodHomeScreen: View {
                     cartBanner
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                         .padding(.bottom, 90)
-                }
+                
             }
-            .navigationBarHidden(true)
+            //.navigationBarHidden(true)
         }
     }
     
