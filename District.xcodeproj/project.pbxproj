@@ -8,21 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		05AA7798600076538788A31E /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBCD6DD2A38F040EB06F54 /* HomeScreen.swift */; };
+		0F7B43BC17E2FC92062A77BA /* TextProcessingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D844A236861C15BACD90E93C /* TextProcessingScreen.swift */; };
 		1C8AEB179CB61703D7D05DA5 /* ItineraryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB569A5DF47389B180DD45B /* ItineraryModels.swift */; };
+		1CE9452D8E045A5B19F6C549 /* ImageAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1777DBB3D019E858541797FD /* ImageAnalysisService.swift */; };
 		3E192D36DE33A7449561A5CF /* UploadFlowScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5CAB20121F1044A2BA31D1 /* UploadFlowScreen.swift */; };
 		645D54435A106434E222F533 /* ItineraryTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC696328F959E184EAF001 /* ItineraryTypeScreen.swift */; };
 		70A31D171A8F0FC197039125 /* ChatFlowScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FE060F7C9CE1BD95CF456E /* ChatFlowScreen.swift */; };
 		8048841506072F98E568FAC6 /* DistrictApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B6353EF928686E47B84DCD /* DistrictApp.swift */; };
+		826AA212582629DF71578248 /* PasteTextScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1934F13CFAD1B2C50F31869B /* PasteTextScreen.swift */; };
 		A367FA004015D504789449DE /* ItineraryResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF3EE98592638D27438F6F6 /* ItineraryResultScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		10B6353EF928686E47B84DCD /* DistrictApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistrictApp.swift; sourceTree = "<group>"; };
+		1777DBB3D019E858541797FD /* ImageAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnalysisService.swift; sourceTree = "<group>"; };
+		1934F13CFAD1B2C50F31869B /* PasteTextScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteTextScreen.swift; sourceTree = "<group>"; };
 		5E5CAB20121F1044A2BA31D1 /* UploadFlowScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFlowScreen.swift; sourceTree = "<group>"; };
 		5EB569A5DF47389B180DD45B /* ItineraryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryModels.swift; sourceTree = "<group>"; };
 		65326399E62444EB00FAEBB9 /* District.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = District.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91FC696328F959E184EAF001 /* ItineraryTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryTypeScreen.swift; sourceTree = "<group>"; };
 		CDF3EE98592638D27438F6F6 /* ItineraryResultScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryResultScreen.swift; sourceTree = "<group>"; };
+		D844A236861C15BACD90E93C /* TextProcessingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessingScreen.swift; sourceTree = "<group>"; };
 		D8FE060F7C9CE1BD95CF456E /* ChatFlowScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowScreen.swift; sourceTree = "<group>"; };
 		FFEBCD6DD2A38F040EB06F54 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -47,6 +53,7 @@
 		8602F1390BF346C7CD1E1ADE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1777DBB3D019E858541797FD /* ImageAnalysisService.swift */,
 				5EB569A5DF47389B180DD45B /* ItineraryModels.swift */,
 			);
 			path = Models;
@@ -69,6 +76,8 @@
 				FFEBCD6DD2A38F040EB06F54 /* HomeScreen.swift */,
 				CDF3EE98592638D27438F6F6 /* ItineraryResultScreen.swift */,
 				91FC696328F959E184EAF001 /* ItineraryTypeScreen.swift */,
+				1934F13CFAD1B2C50F31869B /* PasteTextScreen.swift */,
+				D844A236861C15BACD90E93C /* TextProcessingScreen.swift */,
 				5E5CAB20121F1044A2BA31D1 /* UploadFlowScreen.swift */,
 			);
 			path = Views;
@@ -102,10 +111,9 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = E94C187089C9BCB7B1B0A75E /* Build configuration list for PBXProject "District" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -115,7 +123,6 @@
 			mainGroup = 3E4A7E32AD9EE96541897B7C;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 4916AC038372BAE02836EB2F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -132,9 +139,12 @@
 				70A31D171A8F0FC197039125 /* ChatFlowScreen.swift in Sources */,
 				8048841506072F98E568FAC6 /* DistrictApp.swift in Sources */,
 				05AA7798600076538788A31E /* HomeScreen.swift in Sources */,
+				1CE9452D8E045A5B19F6C549 /* ImageAnalysisService.swift in Sources */,
 				1C8AEB179CB61703D7D05DA5 /* ItineraryModels.swift in Sources */,
 				A367FA004015D504789449DE /* ItineraryResultScreen.swift in Sources */,
 				645D54435A106434E222F533 /* ItineraryTypeScreen.swift in Sources */,
+				826AA212582629DF71578248 /* PasteTextScreen.swift in Sources */,
+				0F7B43BC17E2FC92062A77BA /* TextProcessingScreen.swift in Sources */,
 				3E192D36DE33A7449561A5CF /* UploadFlowScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

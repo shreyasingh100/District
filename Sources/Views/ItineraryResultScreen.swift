@@ -3,7 +3,7 @@ import MapKit
 
 struct ItineraryResultScreen: View {
     let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
-    let timeline = MockData.timeline
+    var timeline: [TimelineBlock] = MockData.timeline
     
     var body: some View {
         ScrollView {
@@ -133,7 +133,17 @@ struct ItineraryResultScreen: View {
         .background(Color(UIColor.secondarySystemGroupedBackground).edgesIgnoringSafeArea(.all))
         .navigationTitle("Your Itinerary")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    NavigationUtil.popToRootView()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(primaryColor)
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack(spacing: 16) {
                     Image(systemName: "square.and.arrow.up").foregroundColor(primaryColor)
@@ -141,6 +151,36 @@ struct ItineraryResultScreen: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Navigation Helper
+struct NavigationUtil {
+    static func popToRootView() {
+        let keyWindow = UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap({ $0 as? UIWindowScene })
+            .first?.windows
+            .filter({ $0.isKeyWindow }).first
+        
+        let rootViewController = keyWindow?.rootViewController
+        if let navigationController = findNavigationController(viewController: rootViewController) {
+            navigationController.popToRootViewController(animated: true)
+        }
+    }
+    
+    static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
+        guard let viewController = viewController else { return nil }
+        
+        if let navigationController = viewController as? UINavigationController {
+            return navigationController
+        }
+        
+        for childViewController in viewController.children {
+            return findNavigationController(viewController: childViewController)
+        }
+        
+        return nil
     }
 }
 

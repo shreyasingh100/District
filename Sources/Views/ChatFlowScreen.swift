@@ -8,8 +8,11 @@ struct ChatQuestion {
 
 struct ChatFlowScreen: View {
     let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
+    
     @State private var step = 0
     @State private var isNavigating = false
+    @State private var selectedOptions: [Int: Set<String>] = [:]
+    @State private var generatedPlanText: String = ""
     
     let questions = [
         ChatQuestion(q: "Want to have food?", options: ["Yes", "No"], multi: false),
@@ -49,29 +52,39 @@ struct ChatFlowScreen: View {
             
             // Options
             ScrollView {
-                // Using LazyVGrid for wrapping chips is complex in older iOS, but FlowLayout is possible.
-                // For simplicity, we use a VStack of HStacks or just a ScrollView of buttons if not wrapping properly.
-                // In iOS 16+, Layout protocol is available. Let's use a simple VStack of buttons for prototype.
                 VStack(spacing: 12) {
                     ForEach(questions[step].options, id: \.self) { opt in
-                        Button(action: handleNext) {
-                            Text(opt)
-                                .font(.system(size: 17, weight: .medium))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(Color(UIColor.secondarySystemGroupedBackground))
-                                .foregroundColor(.primary)
-                                .cornerRadius(24)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                )
+                        let isSelected = selectedOptions[step]?.contains(opt) ?? false
+                        
+                        Button(action: {
+                            toggleOption(opt)
+                        }) {
+                            HStack {
+                                Text(opt)
+                                    .font(.system(size: 17, weight: .medium))
+                                Spacer()
+                                if questions[step].multi {
+                                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                                        .foregroundColor(isSelected ? primaryColor : .gray.opacity(0.5))
+                                        .font(.system(size: 20))
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 16)
+                            .background(isSelected ? primaryColor.opacity(0.1) : Color(UIColor.secondarySystemGroupedBackground))
+                            .foregroundColor(isSelected ? primaryColor : .primary)
+                            .cornerRadius(24)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(isSelected ? primaryColor : Color.gray.opacity(0.2), lineWidth: isSelected ? 2 : 1)
+                            )
                         }
                     }
                 }
             }
             
             if questions[step].multi {
+                let hasSelection = !(selectedOptions[step]?.isEmpty ?? true)
                 Button(action: handleNext) {
                     HStack {
                         Text("Continue")
@@ -80,10 +93,15 @@ struct ChatFlowScreen: View {
                     .font(.system(size: 17, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
-                    .background(LinearGradient(colors: [primaryColor, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .background(
+                        hasSelection
+                        ? LinearGradient(colors: [primaryColor, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        : LinearGradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.3)], startPoint: .leading, endPoint: .trailing)
+                    )
                     .foregroundColor(.white)
                     .cornerRadius(20)
                 }
+                .disabled(!hasSelection)
                 .padding(.top, 16)
             }
             
@@ -105,17 +123,50 @@ struct ChatFlowScreen: View {
         .padding(.top, 24)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $isNavigating) {
-            ItineraryResultScreen()
+            TextProcessingScreen(planText: generatedPlanText)
         }
     }
     
-    func handleNext() {
+    private func toggleOption(_ opt: String) {
+        if questions[step].multi {
+            if selectedOptions[step, default: []].contains(opt) {
+                selectedOptions[step]?.remove(opt)
+            } else {
+                selectedOptions[step, default: []].insert(opt)
+            }
+        } else {
+            selectedOptions[step] = [opt]
+            handleNext()
+        }
+    }
+    
+    private func handleNext() {
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
             if step < questions.count - 1 {
                 step += 1
             } else {
-                isNavigating = true
+                finishAndNavigate()
             }
         }
+    }
+    
+    private func finishAndNavigate() {
+        // Collect all selections into a comma-separated string
+        var allSelections: [String] = []
+        for i in 0..<questions.count {
+            if let opts = selectedOptions[i] {
+                // If they said "No" to food, don't add it
+                if questions[i].q == "Want to have food?" && opts.contains("No") {
+                    continue
+                }
+                if questions[i].q == "Want to have food?" && opts.contains("Yes") {
+                    continue // Skip the word "Yes" itself, they'll specify the type in next step
+                }
+                allSelections.append(contentsOf: opts)
+            }
+        }
+        
+        generatedPlanText = allSelections.joined(separator: ", ")
+        isNavigating = true
     }
 }

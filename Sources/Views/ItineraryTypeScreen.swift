@@ -1,7 +1,13 @@
 import SwiftUI
+import PhotosUI
 
 struct ItineraryTypeScreen: View {
     let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
+    
+    @State private var selectedPhotoItem: PhotosPickerItem?
+    @State private var selectedImage: UIImage?
+    @State private var isNavigatingToUpload = false
+    @State private var isLoadingImage = false
     
     var body: some View {
         ScrollView {
@@ -22,10 +28,21 @@ struct ItineraryTypeScreen: View {
                         .font(.system(size: 15))
                         .foregroundColor(.secondary)
                     
-                    NavigationLink(destination: UploadFlowScreen()) {
+                    // Image Picker Button
+                    PhotosPicker(
+                        selection: $selectedPhotoItem,
+                        matching: .images,
+                        photoLibrary: .shared()
+                    ) {
                         HStack {
-                            Image(systemName: "tray.and.arrow.up.fill")
-                            Text("Upload Image/PDF")
+                            if isLoadingImage {
+                                ProgressView()
+                                    .tint(.white)
+                                Text("Loading...")
+                            } else {
+                                Image(systemName: "tray.and.arrow.up.fill")
+                                Text("Upload Image/PDF")
+                            }
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -33,8 +50,9 @@ struct ItineraryTypeScreen: View {
                         .foregroundColor(.white)
                         .cornerRadius(16)
                     }
+                    .disabled(isLoadingImage)
                     
-                    NavigationLink(destination: UploadFlowScreen()) {
+                    NavigationLink(destination: PasteTextScreen()) {
                         Text("Paste Text")
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -88,5 +106,21 @@ struct ItineraryTypeScreen: View {
         }
         .navigationTitle("Create Itinerary")
         .navigationBarTitleDisplayMode(.large)
+        .onChange(of: selectedPhotoItem) { oldValue, newValue in
+            guard let newValue else { return }
+            isLoadingImage = true
+            Task {
+                defer { isLoadingImage = false }
+                guard let data = try? await newValue.loadTransferable(type: Data.self),
+                      let uiImage = UIImage(data: data) else {
+                    return
+                }
+                selectedImage = uiImage
+                isNavigatingToUpload = true
+            }
+        }
+        .navigationDestination(isPresented: $isNavigatingToUpload) {
+            UploadFlowScreen(uploadedImage: selectedImage)
+        }
     }
 }
