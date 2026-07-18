@@ -7,7 +7,7 @@ struct ChatQuestion {
 }
 
 struct ChatFlowScreen: View {
-    let primaryColor = Color(red: 184/255, green: 164/255, blue: 248/255)
+    @EnvironmentObject var itineraryStore: ItineraryStore
     
     @State private var step = 0
     @State private var isNavigating = false
@@ -25,105 +25,145 @@ struct ChatFlowScreen: View {
     ]
     
     var body: some View {
-        VStack(alignment: .leading) {
+        ZStack {
+            Theme.background.ignoresSafeArea()
             
-            HStack(spacing: 12) {
-                Circle()
-                    .fill(primaryColor)
-                    .frame(width: 40, height: 40)
-                    .overlay(Image(systemName: "sparkles").foregroundColor(.white))
-                    .shadow(color: Color.black.opacity(0.1), radius: 5)
+            VStack(alignment: .leading) {
                 
-                Text("AI Assistant")
-                    .font(.system(size: 18, weight: .semibold))
-                Spacer()
-            }
-            .padding(.bottom, 32)
-            
-            Text(questions[step].q)
-                .font(.system(size: 32, weight: .bold))
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-                .padding(.bottom, 40)
-                .id(step)
-                .transition(.asymmetric(insertion: .opacity.combined(with: .scale(scale: 0.9)), removal: .opacity))
-            
-            Spacer()
-            
-            // Options
-            ScrollView {
-                VStack(spacing: 12) {
-                    ForEach(questions[step].options, id: \.self) { opt in
-                        let isSelected = selectedOptions[step]?.contains(opt) ?? false
+                HStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(Theme.primary)
+                            .frame(width: 40, height: 40)
                         
-                        Button(action: {
-                            toggleOption(opt)
-                        }) {
-                            HStack {
-                                Text(opt)
-                                    .font(.system(size: 17, weight: .medium))
-                                Spacer()
-                                if questions[step].multi {
-                                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                                        .foregroundColor(isSelected ? primaryColor : .gray.opacity(0.5))
-                                        .font(.system(size: 20))
+                        Image(systemName: "sparkles")
+                            .foregroundColor(.white)
+                            .font(.system(size: 16))
+                    }
+                    .shadow(color: Theme.primary.opacity(0.3), radius: 8)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("AI Assistant")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(Theme.textPrimary)
+                        Text("Surprise Me")
+                            .font(.system(size: 12))
+                            .foregroundColor(Theme.textSecondary)
+                    }
+                    Spacer()
+                    
+                    // Step indicator
+                    Text("\(step + 1) / \(questions.count)")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(Theme.textMuted)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Theme.elevatedSurface)
+                        .cornerRadius(12)
+                }
+                .padding(.bottom, 32)
+                
+                Text(questions[step].q)
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(Theme.textPrimary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+                    .padding(.bottom, 40)
+                    .id(step)
+                    .transition(.asymmetric(insertion: .opacity.combined(with: .scale(scale: 0.9)), removal: .opacity))
+                
+                Spacer()
+                
+                // Options
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 12) {
+                        ForEach(questions[step].options, id: \.self) { opt in
+                            let isSelected = selectedOptions[step]?.contains(opt) ?? false
+                            
+                            Button(action: {
+                                toggleOption(opt)
+                            }) {
+                                HStack {
+                                    Text(opt)
+                                        .font(.system(size: 17, weight: .medium))
+                                    
+                                    Spacer()
+                                    
+                                    if questions[step].multi {
+                                        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                                            .foregroundColor(isSelected ? Theme.primary : Theme.textMuted)
+                                    }
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 16)
+                                .padding(.horizontal, 20)
+                                .background(
+                                    isSelected 
+                                        ? Theme.primary.opacity(0.12) 
+                                        : Theme.cardBackground
+                                )
+                                .foregroundColor(
+                                    isSelected 
+                                        ? Theme.primary 
+                                        : Theme.textPrimary
+                                )
+                                .cornerRadius(Theme.cornerM)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: Theme.cornerM)
+                                        .stroke(
+                                            isSelected 
+                                                ? Theme.primary.opacity(0.4)
+                                                : Color.white.opacity(0.06),
+                                            lineWidth: 1
+                                        )
+                                )
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 16)
-                            .background(isSelected ? primaryColor.opacity(0.1) : Color(UIColor.secondarySystemGroupedBackground))
-                            .foregroundColor(isSelected ? primaryColor : .primary)
-                            .cornerRadius(24)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24)
-                                    .stroke(isSelected ? primaryColor : Color.gray.opacity(0.2), lineWidth: isSelected ? 2 : 1)
-                            )
                         }
                     }
                 }
-            }
-            
-            if questions[step].multi {
-                let hasSelection = !(selectedOptions[step]?.isEmpty ?? true)
-                Button(action: handleNext) {
-                    HStack {
-                        Text("Continue")
-                        Image(systemName: "arrow.right")
+                
+                if questions[step].multi {
+                    let hasSelection = !(selectedOptions[step]?.isEmpty ?? true)
+                    Button(action: handleNext) {
+                        HStack {
+                            Text("Continue")
+                            Image(systemName: "arrow.right")
+                        }
+                        .font(.system(size: 17, weight: .bold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(hasSelection ? Theme.primaryGradient : LinearGradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.3)], startPoint: .leading, endPoint: .trailing))
+                        .foregroundColor(.white)
+                        .cornerRadius(20)
+                        .shadow(color: hasSelection ? Theme.primary.opacity(0.3) : .clear, radius: 10, y: 5)
                     }
-                    .font(.system(size: 17, weight: .bold))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 18)
-                    .background(
-                        hasSelection
-                        ? LinearGradient(colors: [primaryColor, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        : LinearGradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.3)], startPoint: .leading, endPoint: .trailing)
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
+                    .disabled(!hasSelection)
+                    .padding(.top, 16)
                 }
-                .disabled(!hasSelection)
-                .padding(.top, 16)
-            }
-            
-            HStack(spacing: 8) {
-                Spacer()
-                ForEach(0..<questions.count, id: \.self) { idx in
-                    Circle()
-                        .fill(idx == step ? primaryColor : Color.gray.opacity(0.3))
-                        .frame(width: 8, height: 8)
-                        .animation(.easeInOut, value: step)
+                
+                // Progress dots
+                HStack(spacing: 8) {
+                    Spacer()
+                    ForEach(0..<questions.count, id: \.self) { idx in
+                        Capsule()
+                            .fill(idx == step ? Theme.primary : Theme.elevatedSurface)
+                            .frame(width: idx == step ? 24 : 8, height: 8)
+                            .animation(.easeInOut, value: step)
+                    }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.top, 24)
+                .padding(.bottom, 16)
+                
             }
+            .padding(.horizontal, 24)
             .padding(.top, 24)
-            .padding(.bottom, 16)
-            
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 24)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .navigationDestination(isPresented: $isNavigating) {
             TextProcessingScreen(planText: generatedPlanText)
+                .environmentObject(itineraryStore)
         }
     }
     
